@@ -1,16 +1,8 @@
-import dotenv
-from pydantic import BaseModel
-from typing import Literal
-dotenv.load_dotenv()
+from pydantic import BaseModel, EmailStr
 
 class User(BaseModel):
-    _id: str
-    name: str
-    email: str
     cpf: str
     phone: str
+    email: EmailStr
     password: str
-    confirm_password: str
-
-    reset_pwd_token: str = ""
-    reset_pwd_token_sent_at: int = 0
+    name: str
