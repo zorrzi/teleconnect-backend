@@ -7,12 +7,12 @@ dotenv.load_dotenv()
 fernet = Fernet(os.getenv("FERNET_SECRET_KEY"))
 
 class PackageModel(Document):
-    mobile_service = StringField(choices=["Pré-pago", "Pós-pago"], required=True)
-    mobile_service_amount = FloatField()
-    fiber = StringField(choices=["Básico", "Intermediário", "Família"], required=True)
-    fiber_amount = FloatField()
-    streaming_partnership = StringField(choices=["GloboPlay", "Premiere"], required=True)
-    fixed_phone = BooleanField(required=True)
+    mobile_service = StringField(choices=["Pré-pago", "Pós-pago"], required=False)
+    mobile_service_amount = FloatField(required=False)
+    fiber = StringField(choices=["Básico", "Intermediário", "Família"], required=False)
+    fiber_amount = FloatField(required=False)
+    streaming_partnership = StringField(choices=["GloboPlay", "Premiere"], required=False)
+    fixed_phone = BooleanField(required=False)
     price = FloatField(required=True)
     is_b2b = BooleanField(required=True)
 
