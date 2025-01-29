@@ -11,3 +11,6 @@ config = {
     "user_jwt_secret": os.getenv("USER_JWT_SECRET"),
     "director_jwt_secret": os.getenv("DIRECTOR_JWT_SECRET"),
 }
+
+if not config["director_jwt_secret"]:
+    raise ValueError("Erro: Variável 'DIRECTOR_JWT_SECRET' não foi carregada do .env")

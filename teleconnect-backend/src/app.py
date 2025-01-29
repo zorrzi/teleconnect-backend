@@ -22,6 +22,7 @@ app.add_middleware(
     allow_credentials=True,                  # Permitir envio de cookies ou headers de autenticação
     allow_methods=["*"],                     # Permitir todos os métodos HTTP (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],                     # Permitir todos os headers
+    expose_headers=["set-cookie"]  # 🔥 Garante que o navegador receba cookies
 )
 
 # Obtém o diretório atual onde o arquivo app.py está localizado
