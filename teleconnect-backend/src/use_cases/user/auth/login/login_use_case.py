@@ -38,4 +38,4 @@ class LoginUseCase:
     )
         
         response.status_code = 202
-        return {"status": "success", "message": "Acesso permitido", "name": user.name}
+        return {"status": "success", "message": "Acesso permitido", "name": user.name, "packages": user.packages}

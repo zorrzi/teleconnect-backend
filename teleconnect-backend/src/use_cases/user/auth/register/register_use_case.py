@@ -4,20 +4,35 @@ from fastapi import Request, Response
 from entities.user import User
 
 class RegisterUseCase:
-    user_repository = UserRepository
-
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
 
     def execute(self, register_dto: RegisterDTO, response: Response, request: Request):
-        if not register_dto.name or not register_dto.email or not register_dto.password or not register_dto.cpf or not register_dto.phone:
-            response.status_code = 406
-            return{"status": "error", "message": "Não foi possível fazer cadastro, preencha todos os campos"}
+        # Valida se todos os campos obrigatórios estão preenchidos
+        if not all([register_dto.name, register_dto.email, register_dto.password, register_dto.cpf, register_dto.phone]):
+            response.status_code = 400
+            return {"status": "error", "message": "Todos os campos são obrigatórios."}
 
-        user = User(**register_dto.model_dump())
+        # Verifica se já existe um usuário com o mesmo email ou CPF
+        existing_user = self.user_repository.find_by_email(register_dto.email)
+        if existing_user:
+            response.status_code = 409
+            return {"status": "error", "message": "Já existe um usuário com este email."}
 
-        self.user_repository.save(user)
+        # Criação do novo usuário
+        try:
+            user = User(
+                cpf=register_dto.cpf,
+                phone=register_dto.phone,
+                email=register_dto.email,
+                password=register_dto.password,
+                name=register_dto.name,
+                packages=register_dto.packages  # Lista de pacotes inicial (pode ser vazia)
+            )
+            self.user_repository.save(user)
 
-        response.status_code = 201
-
-        return{"status": "success", "message": "Cadastro do diretor com sucesso"}
+            response.status_code = 201
+            return {"status": "success", "message": "Usuário registrado com sucesso."}
+        except Exception as e:
+            response.status_code = 500
+            return {"status": "error", "message": f"Erro ao registrar usuário: {str(e)}"}

@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from typing import List, Optional
 
 class User(BaseModel):
     cpf: str
@@ -6,3 +7,4 @@ class User(BaseModel):
     email: str
     password: str
     name: str
+    packages: Optional[List[str]] = []  # Lista de IDs de pacotes adquiridos
