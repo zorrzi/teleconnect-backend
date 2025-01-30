@@ -1,6 +1,7 @@
-from mongoengine import Document, EmailField, StringField, IntField
+from mongoengine import Document, EmailField, StringField, IntField, ReferenceField
+from models.package_model import PackageModel
 import datetime
-from mongoengine.fields import EmailField, StringField, IntField
+from mongoengine.fields import EmailField, StringField, IntField, ListField
 from models.fields.sensivity_field import SensivityField
 import os
 import dotenv
@@ -19,7 +20,7 @@ class UserModel(Document):
     email = StringField(required=True, unique=True)
     password = StringField(required=True)
     name = StringField(required=True)
-
+    packages = ListField(StringField(), default=[])
 
     reset_pwd_token = StringField(default="")
     reset_pwd_token_sent_at = IntField(default=0)

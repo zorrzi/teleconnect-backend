@@ -36,8 +36,24 @@ class UserRepository:
         return result
     
     def find_by_id(self, id: str) -> list[UserModel]:
-        result = UserModel.objects(id=id)
+        result = UserModel.objects(id=id).first()
         return result
+    
+    def add_package_to_user(self, user_id: str, package_id: str) -> bool:
+        # Verifica se o usuário existe
+        user = UserModel.objects(id=user_id).first()
+        if user:
+            # Verifica se o pacote já está na lista de pacotes
+            if package_id not in user.packages:
+                # Atualiza o campo 'packages' usando update para evitar sobrescrita
+                UserModel.objects(id=user_id).update(push__packages=package_id)
+                return True
+        return False
+
+
+    def get_user_packages(self, user_id: str) -> List[str]:
+        user = self.find_by_id(user_id)
+        return user.packages if user else []
     
     def update_reset_pwd_token(self, email: str, sent_at: int, token: str) -> None:
         UserModel.objects(email=email).update(set__reset_pwd_token_sent_at=sent_at, set__reset_pwd_token=token)
@@ -71,3 +87,4 @@ class UserRepository:
     def update_email(self, id: str, email: str) -> None:
         UserModel.objects(id=id).update(set__email = email)
         return None
+    
