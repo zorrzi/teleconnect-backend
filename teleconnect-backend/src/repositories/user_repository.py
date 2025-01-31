@@ -40,13 +40,11 @@ class UserRepository:
         return result
     
     def add_package_to_user(self, user_id: str, package_id: str) -> bool:
-        # Verifica se o usuário existe
-        user = UserModel.objects(id=user_id).first()
+        user = self.find_by_id(user_id)
         if user:
-            # Verifica se o pacote já está na lista de pacotes
+            # Verifica se já está na lista
             if package_id not in user.packages:
-                # Atualiza o campo 'packages' usando update para evitar sobrescrita
-                UserModel.objects(id=user_id).update(push__packages=package_id)
+                UserModel.objects(id=user_id).update_one(push__packages=package_id)
                 return True
         return False
 

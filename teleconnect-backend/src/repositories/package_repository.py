@@ -47,3 +47,6 @@ class PackageRepository:
             setattr(package, field, value)
 
         package.save()
+
+    def find_by_id(self, package_id: str):
+        return PackageModel.objects(id=package_id).first()

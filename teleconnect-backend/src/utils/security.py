@@ -1,3 +1,6 @@
+from fastapi import Request, HTTPException
+from jose import JWTError
+from models.user_model import UserModel
 from passlib.context import CryptContext
 import jwt
 from datetime import datetime, timedelta

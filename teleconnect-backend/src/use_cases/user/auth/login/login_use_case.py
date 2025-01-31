@@ -24,7 +24,7 @@ class LoginUseCase:
             response.status_code = 400
             return {"status": "error", "message": "Senha incorreta, tente novamente mais tarde."}
 
-        token = jwt.encode({"email": user.email, "id": str(user.id)}, os.getenv("USER_JWT_SECRET"))
+        token = jwt.encode({"id": str(user.id)}, os.getenv("USER_JWT_SECRET"), algorithm="HS256")
         print(f"Token gerado: {token}")
 
 
