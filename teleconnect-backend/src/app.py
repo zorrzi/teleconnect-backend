@@ -5,12 +5,14 @@ import os
 import glob
 import dotenv
 from importlib import import_module
+from use_cases.user.user_packages.index import router as user_packages_router
 
 dotenv.load_dotenv()
 
 connect(host=f"mongodb+srv://{os.getenv('MONGO_USER')}:{os.getenv('MONGO_PWD')}@cluster0.acf3k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
 app = FastAPI()
+app.include_router(user_packages_router)
 
 @app.get("/")
 def test():
