@@ -39,6 +39,20 @@ class UserRepository:
         result = UserModel.objects(id=id).first()
         return result
     
+    def get_all_users(self):
+        """
+        Retorna todos os usuários da base de dados.
+
+        Returns:
+            List[UserModel]: Lista de usuários.
+        """
+        try:
+            users = UserModel.objects.all()
+            return users
+        except Exception as e:
+            print(f"Erro ao buscar usuários: {str(e)}")
+            return []
+    
     def add_package_to_user(self, user_id: str, package_id: str) -> bool:
         user = self.find_by_id(user_id)
         if user:
