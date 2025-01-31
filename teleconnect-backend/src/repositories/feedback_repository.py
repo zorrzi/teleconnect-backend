@@ -15,6 +15,7 @@ class FeedbackRepository:
 
         feedback_model.save()
 
+
     def get_feedback_by_id(self, feedback_id: str) -> dict:
         feedback = FeedbackModel.objects(id=feedback_id).first()
         if not feedback:
@@ -25,19 +26,15 @@ class FeedbackRepository:
 
     def list_all_feedbacks(self) -> List[dict]:
         feedbacks = FeedbackModel.objects()
-        return [
-            {
-                **feedback.to_mongo().to_dict(),
-                "_id": str(feedback.id)
-            }
-            for feedback in feedbacks
-        ]
-
-    def delete_feedback(self, feedback_id: str) -> None:
-        feedback = FeedbackModel.objects(id=feedback_id).first()
-        if not feedback:
-            raise ValueError("Feedback não encontrado para exclusão.")
-        feedback.delete()
+        result = []
+        for fb in feedbacks:
+            fb_dict = fb.to_mongo().to_dict()
+            # Ajuste nomes
+            fb_dict["_id"] = str(fb.id)
+            fb_dict["message"] = fb_dict.pop("feedback_text", "")
+            fb_dict["user_id"] = str(fb_dict["user_id"]) if fb_dict["user_id"] else None
+            result.append(fb_dict)
+        return result
 
 
     def create_feedback(self, user_id: str, feedback_text: str, stars: int) -> str:
