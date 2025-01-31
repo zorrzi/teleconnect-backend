@@ -38,3 +38,9 @@ class FeedbackRepository:
         if not feedback:
             raise ValueError("Feedback não encontrado para exclusão.")
         feedback.delete()
+
+
+    def create_feedback(self, user_id: str, feedback_text: str, stars: int) -> str:
+        feedback = FeedbackModel(user_id=user_id, feedback_text=feedback_text, stars=stars)
+        feedback.save()
+        return str(feedback.id)

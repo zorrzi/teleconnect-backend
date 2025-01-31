@@ -59,7 +59,9 @@ def get_user_packages(request: Request, response: Response):
                 "mobile_service": pkg.mobile_service,
                 "fixed_phone": pkg.fixed_phone,
                 "is_b2b": pkg.is_b2b,
-                # ... e quaisquer outros campos
+                "streaming_partnership": pkg.streaming_partnership,
+                "fiber_amount": pkg.fiber_amount,
+                "mobile_service_amount": pkg.mobile_service_amount
             })
 
     return {"status": "success", "data": packages_detail}
