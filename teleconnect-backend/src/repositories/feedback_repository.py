@@ -2,6 +2,7 @@ from typing import List
 from mongoengine import *
 from entities.feedback import Feedback
 from models.feedback_model import FeedbackModel
+from models.user_model import UserModel  # Para buscar o nome do usuário
 
 class FeedbackRepository:
     def save(self, feedback: Feedback) -> None:
@@ -24,20 +25,22 @@ class FeedbackRepository:
         feedback_dict["_id"] = str(feedback_dict["_id"])
         return feedback_dict
 
-    def list_all_feedbacks(self) -> List[dict]:
-        feedbacks = FeedbackModel.objects()
-        result = []
-        for fb in feedbacks:
-            fb_dict = fb.to_mongo().to_dict()
-            # Ajuste nomes
-            fb_dict["_id"] = str(fb.id)
-            fb_dict["message"] = fb_dict.pop("feedback_text", "")
-            fb_dict["user_id"] = str(fb_dict["user_id"]) if fb_dict["user_id"] else None
-            result.append(fb_dict)
-        return result
-
-
     def create_feedback(self, user_id: str, feedback_text: str, stars: int) -> str:
         feedback = FeedbackModel(user_id=user_id, feedback_text=feedback_text, stars=stars)
         feedback.save()
         return str(feedback.id)
+
+    def get_feedbacks(self) -> List[dict]:
+        try:
+            feedbacks = FeedbackModel.objects()
+            feedbacks_list = [
+                {
+                    "_id": str(feedback.id),
+                    "feedback_text": feedback.feedback_text,
+                    "stars": feedback.stars
+                }
+                for feedback in feedbacks
+            ]
+            return feedbacks_list
+        except Exception as e:
+            raise Exception(f"Erro ao buscar feedbacks: {str(e)}")

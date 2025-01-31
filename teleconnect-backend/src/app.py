@@ -6,6 +6,7 @@ import glob
 import dotenv
 from importlib import import_module
 from use_cases.user.user_packages.index import router as user_packages_router
+from use_cases.user.feedback.index import router as feedback_router
 
 dotenv.load_dotenv()
 
@@ -13,6 +14,7 @@ connect(host=f"mongodb+srv://{os.getenv('MONGO_USER')}:{os.getenv('MONGO_PWD')}@
 
 app = FastAPI()
 app.include_router(user_packages_router)
+app.include_router(feedback_router)
 
 @app.get("/")
 def test():
