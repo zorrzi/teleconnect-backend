@@ -11,7 +11,7 @@ class PackageModel(Document):
     mobile_service_amount = FloatField(required=False)
     fiber = StringField(choices=["Básico", "Intermediário", "Família"], required=False)
     fiber_amount = FloatField(required=False)
-    streaming_partnership = StringField(choices=["GloboPlay", "Premiere"], required=False)
+    streaming_partnership = StringField(choices=["GloboPlay", "HBO Max"], required=False)
     fixed_phone = BooleanField(required=False)
     price = FloatField(required=True)
     is_b2b = BooleanField(required=True)
